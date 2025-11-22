@@ -1,5 +1,5 @@
 {
-  "name": "chillui",
+  "name": "@chillui/ui",
   "version": "{{VERSION}}",
   "description": "Chill UI Tailwind - React Native components with Tailwind CSS support",
   "keywords": [
@@ -11,7 +11,9 @@
     "react-native-components",
     "react-native-ui",
     "chillui",
-    "chillui-base"
+    "chillui-base",
+    "@chillui/ui-base",
+    "@chillui/ui"
   ],
   "homepage": "https://github.com/chillui/chill-ui",
   "bugs": {

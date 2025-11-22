@@ -410,6 +410,7 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+      id-token: write # Required for OIDC authentication with npm
 
     steps:
       - name: Checkout code
@@ -423,6 +424,9 @@ jobs:
         with:
           node-version: lts/*
           registry-url: "https://registry.npmjs.org"
+
+      - name: Update npm
+        run: npm install -g npm@latest
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -454,21 +458,17 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git remote set-url origin https://x-access-token:${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
 
-      - name: Setup npm credentials
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Run semantic-release
         run: bun run release
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Replace version placeholders
         run: bun run replace:version
 
       - name: Build all packages
         run: bun run build:all
+
       - name: Publish to npm
         run: |
           TAG="latest"
@@ -478,8 +478,8 @@ jobs:
 
           echo "Publishing with tag: $TAG"
 
-          cd generated/core-tailwind && npm publish --tag $TAG --access public
-          cd ../core-stylesheet && npm publish --tag $TAG --access public
+          cd generated/core-tailwind && npm publish --tag $TAG --access public --provenance
+          cd ../core-stylesheet && npm publish --tag $TAG --access public --provenance
 
   # ==========================================
   # 12. SYNC MAIN → STAGING

@@ -1,5 +1,5 @@
 {
-  "name": "chillui-base",
+  "name": "@chillui/ui-base",
   "version": "{{VERSION}}",
   "description": "Chill UI StyleSheet - React Native components with native StyleSheet styling",
   "keywords": [
@@ -12,7 +12,9 @@
     "react-native-components",
     "react-native-ui",
     "chillui-base",
-    "chillui"
+    "chillui",
+    "@chillui/ui-base",
+    "@chillui/ui"
   ],
   "homepage": "https://github.com/chillui/chill-ui",
   "bugs": {

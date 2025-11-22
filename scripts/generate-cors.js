@@ -1475,6 +1475,31 @@ function main() {
   createComponentsIndex();
   updateCoreIndexes();
 
+  // Generate README.md for all variants
+  console.log('\n📝 Generating README files...');
+  for (const [variantName, config] of Object.entries(VARIANTS)) {
+    const coreDir = path.join(CORE_DIR, config.coreDir);
+    const readmeTemplatePath = 'scripts/templates/README.template.md';
+    
+    if (fs.existsSync(readmeTemplatePath)) {
+      let readmeTemplate = fs.readFileSync(readmeTemplatePath, 'utf8');
+      
+      // Get package name from package.json
+      const packagePath = path.join(coreDir, 'package.json');
+      if (fs.existsSync(packagePath)) {
+        const packageData = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+        const packageName = packageData.name;
+        
+        // Replace placeholder with actual package name
+        readmeTemplate = readmeTemplate.replace(/{{PACKAGE_NAME}}/g, packageName);
+        
+        const readmePath = path.join(coreDir, 'README.md');
+        fs.writeFileSync(readmePath, readmeTemplate);
+        console.log(`📄 Generated: ${readmePath}`);
+      }
+    }
+  }
+
   // Convert aliases to relative paths
   console.log('\n🔄 Converting aliases to relative paths...');
   const { execSync } = require('child_process');
