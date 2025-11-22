@@ -11,7 +11,7 @@
     "react-native-components",
     "react-native-ui",
     "chillui",
-    "chillui-native"
+    "chillui-base"
   ],
   "homepage": "https://github.com/chillui/chill-ui",
   "bugs": {

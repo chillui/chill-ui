@@ -478,8 +478,8 @@ jobs:
 
           echo "Publishing with tag: $TAG"
 
-          cd generated/core-tailwind && npm publish --tag $TAG
-          cd ../core-stylesheet && npm publish --tag $TAG
+          cd generated/core-tailwind && npm publish --tag $TAG --access public
+          cd ../core-stylesheet && npm publish --tag $TAG --access public
 
   # ==========================================
   # 12. SYNC MAIN → STAGING
