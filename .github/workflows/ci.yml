@@ -471,15 +471,29 @@ jobs:
 
       - name: Publish to npm
         run: |
-          TAG="latest"
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
-            TAG="next"
+            echo "📦 Publishing to npm with tag: next"
+            cd generated/core-tailwind && npm publish --tag next --access public --provenance
+            cd ../core-stylesheet && npm publish --tag next --access public --provenance
+          else
+            echo "🏷️ Promoting existing versions from 'next' to 'latest'"
+            
+            # Get package names from package.json
+            TAILWIND_PKG=$(node -p "require('./generated/core-tailwind/package.json').name")
+            STYLESHEET_PKG=$(node -p "require('./generated/core-stylesheet/package.json').name")
+            
+            # Get versions
+            TAILWIND_VERSION=$(node -p "require('./generated/core-tailwind/package.json').version")
+            STYLESHEET_VERSION=$(node -p "require('./generated/core-stylesheet/package.json').version")
+            
+            echo "Promoting ${TAILWIND_PKG}@${TAILWIND_VERSION} to latest"
+            npm dist-tag add ${TAILWIND_PKG}@${TAILWIND_VERSION} latest
+            
+            echo "Promoting ${STYLESHEET_PKG}@${STYLESHEET_VERSION} to latest"
+            npm dist-tag add ${STYLESHEET_PKG}@${STYLESHEET_VERSION} latest
+            
+            echo "✅ Versions promoted to latest tag"
           fi
-
-          echo "Publishing with tag: $TAG"
-
-          cd generated/core-tailwind && npm publish --tag $TAG --access public --provenance
-          cd ../core-stylesheet && npm publish --tag $TAG --access public --provenance
 
   # ==========================================
   # 12. SYNC MAIN → STAGING
