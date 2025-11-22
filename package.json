@@ -1,6 +1,6 @@
 {
   "name": "chill-ui-monorepo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Monorepo for Chill UI - React Native component library",
   "homepage": "https://github.com/chillui/chill-ui",
