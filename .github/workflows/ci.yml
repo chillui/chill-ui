@@ -469,10 +469,10 @@ jobs:
       - name: Build all packages
         run: bun run build:all
 
-      - name: Setup npm credentials for dist-tag
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      # - name: Setup npm credentials for dist-tag
+      #   if: github.ref == 'refs/heads/main'
+      #   run: |
+      #     echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Publish to npm
         run: |
@@ -481,22 +481,22 @@ jobs:
             cd generated/core-tailwind && npm publish --tag next --access public --provenance
             cd ../core-stylesheet && npm publish --tag next --access public --provenance
           else
-            echo "🏷️ Promoting existing versions from 'next' to 'latest'"
+            # Setup npm credentials POUR main
+            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
             
-            # Get package names from package.json
+            echo "🏷️ Promoting existing versions from 'next' to 'latest'"
+
             TAILWIND_PKG=$(node -p "require('./generated/core-tailwind/package.json').name")
             STYLESHEET_PKG=$(node -p "require('./generated/core-stylesheet/package.json').name")
-            
-            # Get versions
             TAILWIND_VERSION=$(node -p "require('./generated/core-tailwind/package.json').version")
             STYLESHEET_VERSION=$(node -p "require('./generated/core-stylesheet/package.json').version")
-            
+
             echo "Promoting ${TAILWIND_PKG}@${TAILWIND_VERSION} to latest"
             npm dist-tag add ${TAILWIND_PKG}@${TAILWIND_VERSION} latest
-            
+
             echo "Promoting ${STYLESHEET_PKG}@${STYLESHEET_VERSION} to latest"
             npm dist-tag add ${STYLESHEET_PKG}@${STYLESHEET_VERSION} latest
-            
+
             echo "✅ Versions promoted to latest tag"
           fi
 
