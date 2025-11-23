@@ -500,7 +500,7 @@ jobs:
             if [ -f ~/.npmrc ]; then
               echo "✅ .npmrc exists"
               echo "📄 .npmrc content (masked):"
-              sed 's/npm_[a-zA-Z0-9_]*/npm_****MASKED****/g' ~/.npmrc
+              sed 's//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}/g' ~/.npmrc
             else
               echo "❌ .npmrc NOT found!"
               exit 1
