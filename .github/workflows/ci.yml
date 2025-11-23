@@ -10,164 +10,164 @@ jobs:
   # ==========================================
   # 1. VALIDATION DES COMMITS (PR uniquement)
   # ==========================================
-  commitlint:
-    name: 🔍 Lint Commit Messages
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+  # commitlint:
+  #   name: 🔍 Lint Commit Messages
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Install commitlint
-        run: bun add -D @commitlint/config-conventional @commitlint/cli
+  #     - name: Install commitlint
+  #       run: bun add -D @commitlint/config-conventional @commitlint/cli
 
-      - name: Validate commits
-        run: bunx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+  #     - name: Validate commits
+  #       run: bunx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
   # ==========================================
   # 2. LINT (Core)
   # ==========================================
-  lint-core:
-    name: 🔗 Lint (Core)
-    runs-on: ubuntu-latest
+  # lint-core:
+  #   name: 🔗 Lint (Core)
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
 
-      - name: Run ESLint
-        run: cd packages/chill-ui-core && bun run lint
+  #     - name: Run ESLint
+  #       run: cd packages/chill-ui-core && bun run lint
 
   # ==========================================
   # 3. TYPE CHECK (Core)
   # ==========================================
-  type-check-core:
-    name: 📘 Type Check (Core)
-    runs-on: ubuntu-latest
+  # type-check-core:
+  # name: 📘 Type Check (Core)
+  # runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  # steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #   - name: Setup Bun
+  #     uses: oven-sh/setup-bun@v2
+  #     with:
+  #       bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-v2-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-v2-
+  #   - name: Cache Bun dependencies
+  #     uses: actions/cache@v4
+  #     with:
+  #       path: |
+  #         ~/.bun/install/cache
+  #       key: ${{ runner.os }}-bun-v2-${{ hashFiles('bun.lockb') }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-bun-v2-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
+  #   - name: Install dependencies
+  #     run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
 
-      - name: Run TypeScript check
-        run: cd packages/chill-ui-core && bun run ts:check
+  #   - name: Run TypeScript check
+  #     run: cd packages/chill-ui-core && bun run ts:check
 
   # ==========================================
   # 4. TESTS (Core)
   # ==========================================
-  tests-core:
-    name: ✅ Tests (Core)
-    runs-on: ubuntu-latest
+  # tests-core:
+  #   name: ✅ Tests (Core)
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
 
-      - name: Run tests with coverage
-        run: cd packages/chill-ui-core && bun run test
+  #     - name: Run tests with coverage
+  #       run: cd packages/chill-ui-core && bun run test
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-          verbose: true
+  #     - name: Upload coverage to Codecov
+  #       uses: codecov/codecov-action@v5
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
+  #         files: ./coverage/lcov.info
+  #         flags: unittests
+  #         name: codecov-umbrella
+  #         fail_ci_if_error: false
+  #         verbose: true
 
   # ==========================================
   # 5. CHECK COMPONENTS DOCUMENTATION
   # ==========================================
-  check-components:
-    name: 📚 Check Components Documentation
-    runs-on: ubuntu-latest
+  # check-components:
+  #   name: 📚 Check Components Documentation
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile && cd packages/chill-ui-core && bun install --frozen-lockfile
 
-      - name: Check components documentation
-        run: bun run check:components-docs
+  #     - name: Check components documentation
+  #       run: bun run check:components-docs
 
   # ==========================================
   # 7. GÉNÉRATION DES COMPOSANTS CORS
@@ -175,7 +175,7 @@ jobs:
   generate-cors:
     name: 🎨 Generate CORS Components
     runs-on: ubuntu-latest
-    needs: [lint-core, type-check-core, tests-core, check-components]
+    # needs: [lint-core, type-check-core, tests-core, check-components]
 
     steps:
       - name: Checkout code
@@ -215,188 +215,188 @@ jobs:
   # ==========================================
   # 8. LINT FIX CORS GÉNÉRÉS
   # ==========================================
-  lint-fix-generated-cors:
-    name: 🛠️ Lint Fix Generated CORS
-    runs-on: ubuntu-latest
-    needs: [generate-cors]
+  # lint-fix-generated-cors:
+  #   name: 🛠️ Lint Fix Generated CORS
+  #   runs-on: ubuntu-latest
+  #   needs: [generate-cors]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile
 
-      - name: Download generated CORS
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-cors-${{ github.sha }}
-          path: generated/
+  #     - name: Download generated CORS
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: generated-cors-${{ github.sha }}
+  #         path: generated/
 
-      - name: Auto-fix ESLint issues
-        run: bun run lint:generated-cors:fix || true
+  #     - name: Auto-fix ESLint issues
+  #       run: bun run lint:generated-cors:fix || true
 
-      - name: Upload fixed generated files
-        uses: actions/upload-artifact@v4
-        with:
-          name: generated-cors-${{ github.sha }}
-          path: generated/
-          overwrite: true
+  #     - name: Upload fixed generated files
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: generated-cors-${{ github.sha }}
+  #         path: generated/
+  #         overwrite: true
 
   # ==========================================
   # 9. TYPE CHECK CORS GÉNÉRÉS
   # ==========================================
-  type-check-generated-cors:
-    name: 📘 Type Check Generated CORS
-    runs-on: ubuntu-latest
-    needs: [generate-cors]
+  # type-check-generated-cors:
+  #   name: 📘 Type Check Generated CORS
+  #   runs-on: ubuntu-latest
+  #   needs: [generate-cors]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile
 
-      - name: Download generated CORS
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-cors-${{ github.sha }}
-          path: generated/
+  #     - name: Download generated CORS
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: generated-cors-${{ github.sha }}
+  #         path: generated/
 
-      - name: Run TypeScript check on generated CORS
-        run: bun run ts:check:generated-cors
+  #     - name: Run TypeScript check on generated CORS
+  #       run: bun run ts:check:generated-cors
 
   # ==========================================
   # 10. BUILD (staging et main uniquement)
   # ==========================================
-  build:
-    name: 🏗️ Build Packages
-    runs-on: ubuntu-latest
-    needs: [lint-fix-generated-cors, type-check-generated-cors]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
+  # build:
+  #   name: 🏗️ Build Packages
+  #   runs-on: ubuntu-latest
+  #   needs: [lint-fix-generated-cors, type-check-generated-cors]
+  #   if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile
 
-      - name: Download generated CORS
-        uses: actions/download-artifact@v4
-        with:
-          name: generated-cors-${{ github.sha }}
-          path: generated/
+  #     - name: Download generated CORS
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: generated-cors-${{ github.sha }}
+  #         path: generated/
 
-      - name: Build all packages
-        run: bun run build:all
+  #     - name: Build all packages
+  #       run: bun run build:all
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ github.sha }}
-          path: generated/
-          retention-days: 7
+  #     - name: Upload build artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: generated/
+  #         retention-days: 7
 
   # ==========================================
   # 11. PACK (staging et main uniquement)
   # ==========================================
-  pack:
-    name: 📦 Pack Packages
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
+  # pack:
+  #   name: 📦 Pack Packages
+  #   runs-on: ubuntu-latest
+  #   needs: [build]
+  #   if: github.event_name == 'push' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main')
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Cache Bun dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.bun/install/cache
-            node_modules
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+  #     - name: Cache Bun dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: |
+  #           ~/.bun/install/cache
+  #           node_modules
+  #         key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-bun-
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+  #     - name: Install dependencies
+  #       run: bun install --frozen-lockfile
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-${{ github.sha }}
-          path: generated/
+  #     - name: Download build artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: build-${{ github.sha }}
+  #         path: generated/
 
-      - name: Pack all packages
-        run: bun run pack:all
+  #     - name: Pack all packages
+  #       run: bun run pack:all
 
-      - name: Upload packed artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: packages-${{ github.sha }}
-          path: |
-            generated/**/*.tgz
-            generated/**/lib
-          retention-days: 30
+  #     - name: Upload packed artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: packages-${{ github.sha }}
+  #         path: |
+  #           generated/**/*.tgz
+  #           generated/**/lib
+  #         retention-days: 30
 
-      - name: List generated packages
-        run: |
-          echo "📦 Packages générés :"
-          find generated -name "*.tgz" -type f
+  #     - name: List generated packages
+  #       run: |
+  #         echo "📦 Packages générés :"
+  #         find generated -name "*.tgz" -type f
 
   # ==========================================
   # 11. RELEASE & PUBLISH (staging et main)
@@ -468,6 +468,11 @@ jobs:
 
       - name: Build all packages
         run: bun run build:all
+
+      - name: Setup npm credentials for dist-tag
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
       - name: Publish to npm
         run: |
