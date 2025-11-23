@@ -419,6 +419,13 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
 
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: "https://registry.npmjs.org"
+          always-auth: true
+
       - name: Update npm
         run: npm install -g npm@latest
 
@@ -467,13 +474,6 @@ jobs:
       #   if: github.ref == 'refs/heads/main'
       #   run: |
       #     echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: Setup Node.js LTS
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          registry-url: "https://registry.npmjs.org"
-          always-auth: true
 
       - name: Publish / promote tags
         env:
