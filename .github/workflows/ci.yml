@@ -419,12 +419,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.BOT_ACTIONS_ACCESS_TOKEN }}
 
-      - name: Setup Node.js LTS
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          registry-url: "https://registry.npmjs.org"
-
       - name: Update npm
         run: npm install -g npm@latest
 
@@ -474,38 +468,22 @@ jobs:
       #   run: |
       #     echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Publish to npm
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: "https://registry.npmjs.org"
+          always-auth: true
+
+      - name: Publish / promote tags
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/staging" ]]; then
             echo "📦 Publishing to npm with tag: next"
             cd generated/core-tailwind && npm publish --tag next --access public --provenance
             cd ../core-stylesheet && npm publish --tag next --access public --provenance
           else
-            # Validate NPM_TOKEN exists
-            echo "🔐 Validating NPM_TOKEN..."
-            if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-              echo "❌ ERROR: NPM_TOKEN secret is not set or is empty!"
-              echo "Please configure NPM_TOKEN in GitHub repository secrets."
-              exit 1
-            fi
-            echo "✅ NPM_TOKEN is set"
-            
-            # Setup npm credentials POUR main
-            echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-            
-            # Debug: Verify .npmrc was created
-            echo "🔍 Checking .npmrc file..."
-            if [ -f ~/.npmrc ]; then
-              echo "✅ .npmrc exists"
-              echo "📄 .npmrc content (masked):"
-              cat ~/.npmrc
-            else
-              echo "❌ .npmrc NOT found!"
-              exit 1
-            fi
-            
             echo "🏷️ Promoting existing versions from 'next' to 'latest'"
 
             TAILWIND_PKG=$(node -p "require('./generated/core-tailwind/package.json').name")
@@ -516,7 +494,8 @@ jobs:
             echo "Promoting ${STYLESHEET_PKG}@${STYLESHEET_VERSION} to latest"
             npm dist-tag add ${STYLESHEET_PKG}@${STYLESHEET_VERSION} latest
 
-            echo "✅ Versions promoted to latest tag"
+            echo "Promoting ${TAILWIND_PKG}@${TAILWIND_VERSION} to latest"
+            npm dist-tag add ${TAILWIND_PKG}@${TAILWIND_VERSION} latest
           fi
 
   # ==========================================
