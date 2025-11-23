@@ -483,8 +483,28 @@ jobs:
             cd generated/core-tailwind && npm publish --tag next --access public --provenance
             cd ../core-stylesheet && npm publish --tag next --access public --provenance
           else
+            # Validate NPM_TOKEN exists
+            echo "🔐 Validating NPM_TOKEN..."
+            if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+              echo "❌ ERROR: NPM_TOKEN secret is not set or is empty!"
+              echo "Please configure NPM_TOKEN in GitHub repository secrets."
+              exit 1
+            fi
+            echo "✅ NPM_TOKEN is set"
+            
             # Setup npm credentials POUR main
             echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+            
+            # Debug: Verify .npmrc was created
+            echo "🔍 Checking .npmrc file..."
+            if [ -f ~/.npmrc ]; then
+              echo "✅ .npmrc exists"
+              echo "📄 .npmrc content (masked):"
+              sed 's/npm_[a-zA-Z0-9_]*/npm_****MASKED****/g' ~/.npmrc
+            else
+              echo "❌ .npmrc NOT found!"
+              exit 1
+            fi
             
             echo "🏷️ Promoting existing versions from 'next' to 'latest'"
 
@@ -492,9 +512,6 @@ jobs:
             STYLESHEET_PKG=$(node -p "require('./generated/core-stylesheet/package.json').name")
             TAILWIND_VERSION=$(node -p "require('./generated/core-tailwind/package.json').version")
             STYLESHEET_VERSION=$(node -p "require('./generated/core-stylesheet/package.json').version")
-
-            echo "Promoting ${TAILWIND_PKG}@${TAILWIND_VERSION} to latest"
-            npm dist-tag add ${TAILWIND_PKG}@${TAILWIND_VERSION} latest
 
             echo "Promoting ${STYLESHEET_PKG}@${STYLESHEET_VERSION} to latest"
             npm dist-tag add ${STYLESHEET_PKG}@${STYLESHEET_VERSION} latest
