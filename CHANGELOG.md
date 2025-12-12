@@ -1,11 +1,10 @@
-## <small>0.0.3 (2025-12-12)</small>
+## <small>0.0.3-next.1 (2025-12-12)</small>
 
 * Merge pull request #80 from chillui/chore/storybook-update ([cb19cd2](https://github.com/chillui/chill-ui/commit/cb19cd2)), closes [#80](https://github.com/chillui/chill-ui/issues/80)
 * Merge pull request #81 from chillui/develop ([8898449](https://github.com/chillui/chill-ui/commit/8898449)), closes [#81](https://github.com/chillui/chill-ui/issues/81)
 * Merge pull request #82 from chillui/staging ([4235305](https://github.com/chillui/chill-ui/commit/4235305)), closes [#82](https://github.com/chillui/chill-ui/issues/82)
 * Merge pull request #83 from chillui/fix/icons-actions-import ([f4f71b0](https://github.com/chillui/chill-ui/commit/f4f71b0)), closes [#83](https://github.com/chillui/chill-ui/issues/83)
 * Merge pull request #84 from chillui/develop ([68190d7](https://github.com/chillui/chill-ui/commit/68190d7)), closes [#84](https://github.com/chillui/chill-ui/issues/84)
-* Merge pull request #85 from chillui/staging ([17738bc](https://github.com/chillui/chill-ui/commit/17738bc)), closes [#85](https://github.com/chillui/chill-ui/issues/85)
 * fix(icons-import): fix icons import for storybook and generated icons ([3f558ec](https://github.com/chillui/chill-ui/commit/3f558ec))
 * chore: change the name the package.json of the monorepo ([cd87f7e](https://github.com/chillui/chill-ui/commit/cd87f7e))
 * chore(storybook): update storybook for deployment ([0585880](https://github.com/chillui/chill-ui/commit/0585880))
