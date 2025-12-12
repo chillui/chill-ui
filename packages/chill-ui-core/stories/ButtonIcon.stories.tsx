@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-native-web-vite';
 
 import { action } from 'storybook/actions';
 
-import { ICON_OPTIONS } from '../src/constants';
+import { ICONS_OPTIONS } from '../src/constants';
 import UiPresentation from './storybook/UiPresentation';
 import { ButtonIconTw as ButtonIcon } from '../src/components';
 
@@ -54,7 +54,7 @@ const meta: Meta<typeof ButtonIcon> = {
 
     iconName: {
       control: 'select',
-      options: ICON_OPTIONS,
+      options: ICONS_OPTIONS,
     },
     isDisabled: {
       table: {
