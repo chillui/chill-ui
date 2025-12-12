@@ -94,4 +94,4 @@ export const ICONS = {
 
 export type TIcons = typeof ICONS;
 export type TIconName = keyof TIcons;
-export const ICON_OPTIONS = Object.keys(ICONS) as TIconName[];
+export const ICONS_OPTIONS = Object.keys(ICONS) as TIconName[];
