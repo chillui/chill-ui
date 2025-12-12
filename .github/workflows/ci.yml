@@ -415,7 +415,7 @@ jobs:
 
       - name: Build all packages
         run: bun run build:all
-      - name: Publish / promote tags
+      - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
@@ -424,18 +424,9 @@ jobs:
             cd generated/core-tailwind && npm publish --tag next --access public --provenance
             cd ../core-stylesheet && npm publish --tag next --access public --provenance
           else
-            echo "🏷️ Promoting existing versions from 'next' to 'latest'"
-
-            TAILWIND_PKG=$(node -p "require('./generated/core-tailwind/package.json').name")
-            STYLESHEET_PKG=$(node -p "require('./generated/core-stylesheet/package.json').name")
-            TAILWIND_VERSION=$(node -p "require('./generated/core-tailwind/package.json').version")
-            STYLESHEET_VERSION=$(node -p "require('./generated/core-stylesheet/package.json').version")
-
-            echo "Promoting ${STYLESHEET_PKG}@${STYLESHEET_VERSION} to latest"
-            npm dist-tag add ${STYLESHEET_PKG}@${STYLESHEET_VERSION} latest
-
-            echo "Promoting ${TAILWIND_PKG}@${TAILWIND_VERSION} to latest"
-            npm dist-tag add ${TAILWIND_PKG}@${TAILWIND_VERSION} latest
+            echo "📦 Publishing to npm with tag: latest (stable release)"
+            cd generated/core-tailwind && npm publish --access public --provenance
+            cd ../core-stylesheet && npm publish --access public --provenance
           fi
 
   # ==========================================
