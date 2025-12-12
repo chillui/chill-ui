@@ -29,6 +29,7 @@
     "pack:stylesheet": "cd generated/core-stylesheet && npm pack",
     "pack:tailwind": "cd generated/core-tailwind && npm pack",
     "pack:all": "bun run pack:stylesheet && bun run pack:tailwind",
+    "generate:pack": "bun generate:cors:all && bun run lint:generated-cors:fix && bun run check:generated-cors && bun run build:all && bun run pack:all",
     "replace:version": "node scripts/replace-version.js",
     "release": "semantic-release --extends ./packages/chill-ui-core/.releaserc.json",
     "convert:aliases": "node scripts/convert-aliases-to-relative.js",
@@ -91,5 +92,20 @@
     "react-native-svg": "^15.15.0",
     "tailwind-merge": "^3.4.0",
     "tailwind-variants": "^3.1.1"
-  }
+  },
+  "react-native-builder-bob": {
+        "source": "src",
+        "output": "lib",
+        "exclude": "example/**",
+        "targets": [
+            "commonjs",
+            "module",
+            [
+                "typescript",
+                {
+                    "project": "tsconfig.build.json"
+                }
+            ]
+        ]
+    }
 }
