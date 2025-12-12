@@ -79,7 +79,7 @@ export const ICONS = ${iconObj} as const;
 
 export type TIcons = typeof ICONS;
 export type TIconName = keyof TIcons;
-export const ICON_OPTIONS = Object.keys(ICONS) as TIconName[];
+export const ICONS_OPTIONS = Object.keys(ICONS) as TIconName[];
 `;
 
   const outputPath = path.resolve(process.cwd(), CONFIG.outputFile);
